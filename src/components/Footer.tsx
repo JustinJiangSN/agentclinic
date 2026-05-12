@@ -1,7 +1,7 @@
-export function Footer() {
-  return (
-    <footer class="site-footer">
-      <p>AgentClinic &mdash; because every agent deserves a break.</p>
+import {FC} from "hono/jsx";
+
+export const Footer: FC = () => (
+    <footer>
+        <p>&copy; {new Date().getFullYear()} AgentClinic</p>
     </footer>
-  );
-}
+);

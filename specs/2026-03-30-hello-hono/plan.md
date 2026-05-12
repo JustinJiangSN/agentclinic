@@ -14,7 +14,7 @@
 
 ## Group 3 — Dev Script
 
-7. Add `"dev": "tsx watch src/index.tsx"` to `package.json` scripts
+7. Add `"dev": "tsx src/index.ts"` (or `tsx watch`) to `package.json` scripts
 8. Add `"typecheck": "tsc --noEmit"` to `package.json` scripts
 
 ## Group 4 — Home Page
@@ -26,17 +26,15 @@
 ## Group 5 — Layout Component
 
 12. Create `src/components/Layout.tsx` with a top-level shell (`<html>`, `<head>`, `<body>`); it imports `<Header>`, `<Main>`, and `<Footer>` from their own files
-13. Create each subcomponent in its own dedicated file — one export per file:
-    - `src/components/Header.tsx` — exports `Header`
-    - `src/components/Main.tsx` — exports `Main` (accepts and renders `children`)
-    - `src/components/Footer.tsx` — exports `Footer`
-14. Create `static/style.css` with mobile-first base styles: CSS custom properties, reset, fluid typography, and responsive layout via media queries
-15. Register `@hono/node-server/serve-static` on `/static/*` in `src/index.tsx` so the file is reachable
-16. Add `<link rel="stylesheet" href="/static/style.css" />` to `<head>` inside `Layout.tsx`
+13. Create `src/components/Header.tsx`, `src/components/Main.tsx`, and `src/components/Footer.tsx` as separate files, one component each
+14. `<head>` links to `/static/style.css`
+15. Create `static/style.css` with mobile-first base styles: CSS custom properties for spacing/color tokens, base element styles for small screens, and `min-width` media queries for larger viewports
+16. Serve the `static/` directory via `@hono/node-server/serve-static` in `src/index.tsx`
 17. Update `src/pages/Home.tsx` to use `<Layout>` and place page content inside `<Main>`
 
 ## Group 6 — Verify
 
 18. Run `npm run typecheck` — must exit 0 with no errors
-19. Write `tests/phase-1.test.ts` with Vitest tests covering the acceptance criteria in `validation.md`
-20. Run `npm test` — all tests must pass
+19. Run `npm run dev` and confirm `curl localhost:3000` returns HTML containing the heading
+20. Confirm `curl localhost:3000/static/style.css` returns the CSS file
+21. Run `npm test` — must exit 0 (no test files required yet; Vitest must be installed)

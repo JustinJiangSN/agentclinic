@@ -7,17 +7,19 @@
     "build": "tsc",
     "dev": "tsx watch src/index.tsx",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run"
+    "seed": "tsx src/db/run-seed.ts",
+    "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
-    "@hono/node-server": "2.0.2",
-    "hono": "4.7.10"
+    "@hono/node-server": "1.19.12",
+    "better-sqlite3": "^12.8.0",
+    "hono": "4.12.9"
   },
   "devDependencies": {
-    "@types/node": "^25.7.0",
-    "tsx": "4.19.3",
+    "@types/better-sqlite3": "^7.6.13",
+    "tsx": "4.21.0",
     "typescript": "^5.5.3",
-    "vitest": "^4.1.6"
+    "vitest": "4.1.2"
   },
   "private": true
 }

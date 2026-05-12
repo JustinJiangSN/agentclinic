@@ -1,70 +1,85 @@
-import { describe, it, expect } from 'vitest';
-import { Header } from '../src/components/Header';
-import { Footer } from '../src/components/Footer';
-import { Main } from '../src/components/Main';
-import { Layout } from '../src/components/Layout';
+import { describe, it, expect } from "vitest";
+import { Header } from "../src/components/Header";
+import { Footer } from "../src/components/Footer";
+import { Main } from "../src/components/Main";
+import { Layout } from "../src/components/Layout";
 
-function render(node: unknown): string {
-  return String(node);
-}
-
-describe('Header', () => {
-  it('renders a <header> element', () => {
-    expect(render(<Header />)).toContain('<header');
+describe("Header", () => {
+  it("renders a header element", () => {
+    const html = Header({}).toString();
+    expect(html).toContain("<header");
   });
 
-  it('links back to /', () => {
-    expect(render(<Header />)).toContain('href="/"');
+  it("links to the home page", () => {
+    const html = Header({}).toString();
+    expect(html).toContain('href="/"');
   });
 
-  it('displays the AgentClinic brand name', () => {
-    expect(render(<Header />)).toContain('AgentClinic');
-  });
-});
-
-describe('Footer', () => {
-  it('renders a <footer> element', () => {
-    expect(render(<Footer />)).toContain('<footer');
-  });
-
-  it('contains site credit text', () => {
-    expect(render(<Footer />)).toContain('AgentClinic');
+  it("displays the site name", () => {
+    const html = Header({}).toString();
+    expect(html).toContain("AgentClinic");
   });
 });
 
-describe('Main', () => {
-  it('renders a <main> element', () => {
-    expect(render(<Main>content</Main>)).toContain('<main');
+describe("Footer", () => {
+  it("renders a footer element", () => {
+    const html = Footer({}).toString();
+    expect(html).toContain("<footer");
   });
 
-  it('renders children inside <main>', () => {
-    expect(render(<Main>hello world</Main>)).toContain('hello world');
+  it("displays the current year", () => {
+    const html = Footer({}).toString();
+    expect(html).toContain(String(new Date().getFullYear()));
+  });
+
+  it("displays the site name", () => {
+    const html = Footer({}).toString();
+    expect(html).toContain("AgentClinic");
   });
 });
 
-describe('Layout', () => {
-  it('renders a full HTML document shell', () => {
-    const html = render(<Layout>page</Layout>);
-    expect(html).toContain('<html');
-    expect(html).toContain('<head');
-    expect(html).toContain('<body');
+describe("Main", () => {
+  it("renders a main element", () => {
+    const html = Main({ children: "content" }).toString();
+    expect(html).toContain("<main");
   });
 
-  it('links the stylesheet', () => {
-    expect(render(<Layout>page</Layout>)).toContain('/static/style.css');
+  it("renders children", () => {
+    const html = Main({ children: "hello world" }).toString();
+    expect(html).toContain("hello world");
+  });
+});
+
+describe("Layout", () => {
+  it("renders an html element with lang attribute", () => {
+    const html = Layout({ children: "" }).toString();
+    expect(html).toContain('<html lang="en"');
   });
 
-  it('renders children in the main area', () => {
-    expect(render(<Layout>unique-content</Layout>)).toContain('unique-content');
+  it("includes a title", () => {
+    const html = Layout({ children: "" }).toString();
+    expect(html).toContain("<title>AgentClinic</title>");
   });
 
-  it('includes header and footer', () => {
-    const html = render(<Layout>page</Layout>);
-    expect(html).toContain('<header');
-    expect(html).toContain('<footer');
+  it("links the stylesheet", () => {
+    const html = Layout({ children: "" }).toString();
+    expect(html).toContain('href="/static/style.css"');
   });
 
-  it('includes a viewport meta tag', () => {
-    expect(render(<Layout>page</Layout>)).toContain('name="viewport"');
+  it("renders children", () => {
+    const html = Layout({ children: "page content" }).toString();
+    expect(html).toContain("page content");
+  });
+
+  it("includes header and footer", () => {
+    const html = Layout({ children: "" }).toString();
+    expect(html).toContain("<header");
+    expect(html).toContain("<footer");
+  });
+
+  it("includes the viewport meta tag for responsive design", () => {
+    const html = Layout({ children: "" }).toString();
+    expect(html).toContain('name="viewport"');
+    expect(html).toContain("width=device-width");
   });
 });

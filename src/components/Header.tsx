@@ -1,9 +1,17 @@
-export function Header() {
-  return (
-    <header class="site-header">
-      <nav class="site-nav">
-        <a href="/" class="nav-brand">AgentClinic</a>
-      </nav>
-    </header>
-  );
-}
+import {FC} from "hono/jsx";
+
+export const Header: FC = () => (
+  <header>
+    <nav>
+      <a href="/">AgentClinic</a>
+      <ul>
+        <li>
+          <a href="/agents">Agents</a>
+        </li>
+        <li>
+          <a href="/ailments">Ailments</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
+);
