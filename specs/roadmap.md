@@ -1,68 +1,58 @@
 # Roadmap
 
-Phases are feature-grouped. Each phase is independently shippable. Phases do not start until the previous one is complete and reviewed.
+Phases are intentionally small — each one is a shippable slice of work, independently reviewable and testable.
 
 ---
 
-## Phase 1 — Foundation
+## Phase 1 — Hello Hono
+- Install and configure Hono with `tsx` dev server
+- Single `/` route returning "AgentClinic is open for business"
+- Confirm TypeScript types work end-to-end
 
-Set up the project so any developer can run it in one command.
+## Phase 2 — Base Layout
+- Server-side JSX layout component (header, nav, main, footer)
+- Basic CSS (custom properties, reset, typography)
+- All routes render inside the shared layout
 
-- Scaffold Next.js app with TypeScript, Tailwind CSS, and ESLint
-- Configure Prisma with SQLite
-- Set up NextAuth.js with a basic staff login
-- Seed script with a handful of example agents, ailments, and therapies
-- Deploy to a single VPS (or document local-only setup)
+## Phase 3 — Agent List
+- SQLite database + first migration (`agents` table)
+- Seed a handful of fictional agents
+- `/agents` page listing all agents
 
----
+## Phase 4 — Agent Detail
+- `/agents/:id` page showing a single agent's profile
+- Name, model type, current status, presenting complaints
 
-## Phase 2 — Agent Management
+## Phase 5 — Ailments Catalog
+- `ailments` table + seed data (e.g., "context-window claustrophobia", "prompt fatigue")
+- `/ailments` list page
+- Link agents to one or more ailments
 
-Staff can view and manage the patient roster.
+## Phase 6 — Therapies Catalog
+- `therapies` table + seed data
+- `/therapies` list page
+- Map ailments → recommended therapies
 
-- Agent data model (name, model type, status, registration date)
-- Agent list page with search and filter
-- Agent detail page
-- Create / edit / archive an agent (CRUD)
+## Phase 7 — Appointment Booking
+- `appointments` table (agent, therapist, datetime, status)
+- Form to book an appointment from an agent's detail page
+- Basic validation and confirmation page
 
----
+## Phase 8 — Staff Dashboard
+- `/dashboard` with summary counts: agents, open appointments, ailments in-flight
+- Simple table views for staff to manage records
+- Mary's dashboard is now real
 
-## Phase 3 — Ailments & Therapies
+## Phase 9 — Polish & Accessibility
+- Responsive layout for Steve's modern-browser requirement
+- Semantic HTML audit
+- Keyboard navigation and focus styles
 
-Capture what is wrong and what might help.
-
-- Ailment data model (name, severity, description)
-- Therapy data model (name, duration, description)
-- Association: an agent can have many ailments; a therapy addresses one or more ailments
-- Admin pages to manage the ailment and therapy catalogs
-
----
-
-## Phase 4 — Appointments & Booking
-
-Agents get scheduled; staff track progress.
-
-- Appointment data model (agent, therapy, staff member, datetime, status)
-- Booking flow: select agent → select therapy → pick slot → confirm
-- Appointment list and calendar view on the staff dashboard
-- Status transitions: scheduled → in-progress → complete / cancelled
-
----
-
-## Phase 5 — Dashboard & Polish
-
-Make Steve happy; make the site feel real.
-
-- Summary dashboard: active patients, upcoming appointments, popular ailments
-- Public-facing marketing landing page (attractive, works well in a modern browser)
-- Responsive layout audit across viewport sizes
-- Accessibility pass (keyboard nav, ARIA labels, color contrast)
+## Phase 10 — Hardening
+- Error pages (404, 500)
+- Input sanitization on all forms
+- Basic logging middleware
 
 ---
 
-## Out of scope (for now)
-
-- Agent self-service portal — agents cannot book their own appointments (yet)
-- Email or notification system
-- Multi-tenant / multi-clinic support
-- Billing
+Later phases (not yet planned): auth, email notifications, therapist profiles, reporting.
