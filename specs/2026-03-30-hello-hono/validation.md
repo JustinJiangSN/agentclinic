@@ -12,35 +12,22 @@ npm run typecheck
 
 Must exit with code 0 and produce no errors or warnings.
 
-### 2. Server starts
+### 2. All Vitest tests pass
 
 ```
-npm run dev
+npm test
 ```
 
-Must start without errors. The terminal should show the server is listening (port 3000 or logged port).
+Must exit with code 0. The test suite covers:
 
-### 3. Route returns an HTML home page
-
-```
-curl -s http://localhost:3000
-```
-
-HTTP status must be `200 OK`. Response body must be HTML and must contain:
-
-- An `<h1>` element with the text `AgentClinic`
-- A tagline (any short descriptive text; exact wording is implementation choice)
-
-### 4. Hono version is pinned
-
-`package.json` must list `hono` without a `^` or `~` range prefix.
-
-### 5. Strict TypeScript is on
-
-`tsconfig.json` must contain `"strict": true`.
+- `GET /` returns HTTP 200
+- Response body contains `<h1>AgentClinic</h1>`
+- Response body contains an element with `class="tagline"`
+- `GET /static/style.css` returns HTTP 200
+- `hono` in `package.json` is pinned with no `^` or `~` prefix
+- `tsconfig.json` has `"strict": true`
 
 ## Not Required
 
-- No automated tests needed for this phase
 - No CI pipeline required
-- Browser rendering not checked (curl is sufficient)
+- Browser rendering not checked (in-process Hono requests are sufficient)
