@@ -14,7 +14,7 @@
 
 ## Group 3 — Dev Script
 
-7. Add `"dev": "tsx src/index.ts"` (or `tsx watch`) to `package.json` scripts
+7. Add `"dev": "tsx watch src/index.tsx"` to `package.json` scripts
 8. Add `"typecheck": "tsc --noEmit"` to `package.json` scripts
 
 ## Group 4 — Home Page
@@ -26,10 +26,13 @@
 ## Group 5 — Layout Component
 
 12. Create `src/components/Layout.tsx` with a top-level shell (`<html>`, `<head>`, `<body>`); it imports `<Header>`, `<Main>`, and `<Footer>` from their own files
-13. Create `src/components/Header.tsx`, `src/components/Main.tsx`, and `src/components/Footer.tsx` as separate files, one component each
-14. `<head>` links to `/static/style.css`
-15. Create `static/style.css` with minimal base styles
-16. Serve the `static/` directory via `@hono/node-server/serve-static` in `src/index.tsx`
+13. Create each subcomponent in its own dedicated file — one export per file:
+    - `src/components/Header.tsx` — exports `Header`
+    - `src/components/Main.tsx` — exports `Main` (accepts and renders `children`)
+    - `src/components/Footer.tsx` — exports `Footer`
+14. Create `static/style.css` with minimal base styles (CSS custom properties, reset, typography)
+15. Register `@hono/node-server/serve-static` on `/static/*` in `src/index.tsx` so the file is reachable
+16. Add `<link rel="stylesheet" href="/static/style.css" />` to `<head>` inside `Layout.tsx`
 17. Update `src/pages/Home.tsx` to use `<Layout>` and place page content inside `<Main>`
 
 ## Group 6 — Verify
