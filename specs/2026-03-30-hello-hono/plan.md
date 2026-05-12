@@ -30,7 +30,7 @@
     - `src/components/Header.tsx` — exports `Header`
     - `src/components/Main.tsx` — exports `Main` (accepts and renders `children`)
     - `src/components/Footer.tsx` — exports `Footer`
-14. Create `static/style.css` with minimal base styles (CSS custom properties, reset, typography)
+14. Create `static/style.css` with mobile-first base styles: CSS custom properties, reset, fluid typography, and responsive layout via media queries
 15. Register `@hono/node-server/serve-static` on `/static/*` in `src/index.tsx` so the file is reachable
 16. Add `<link rel="stylesheet" href="/static/style.css" />` to `<head>` inside `Layout.tsx`
 17. Update `src/pages/Home.tsx` to use `<Layout>` and place page content inside `<Main>`
@@ -38,5 +38,5 @@
 ## Group 6 — Verify
 
 18. Run `npm run typecheck` — must exit 0 with no errors
-19. Run `npm run dev` and confirm `curl localhost:3000` returns HTML containing the heading
-20. Confirm `curl localhost:3000/static/style.css` returns the CSS file
+19. Write `tests/phase-1.test.ts` with Vitest tests covering the acceptance criteria in `validation.md`
+20. Run `npm test` — all tests must pass

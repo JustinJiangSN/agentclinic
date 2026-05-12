@@ -30,4 +30,4 @@ This is the first visible page a developer sees when they clone and run the proj
 ## Stakeholder Notes
 
 - **Mary** needs TypeScript end-to-end (satisfied by `strict: true` + successful `tsc --noEmit`)
-- **Steve** has no requirements yet; this phase is plumbing only
+- **Steve** requires the UI to work on any modern browser and screen size; the viewport meta tag and mobile-first CSS must be in place from Phase 1 onward
