@@ -23,6 +23,7 @@ Must exit with code 0. The test suite covers:
 - `GET /` returns HTTP 200
 - Response body contains `<h1>AgentClinic</h1>`
 - Response body contains an element with `class="tagline"`
+- Response body contains a `<meta name="viewport">` tag
 - `GET /static/style.css` returns HTTP 200
 - `hono` in `package.json` is pinned with no `^` or `~` prefix
 - `tsconfig.json` has `"strict": true`

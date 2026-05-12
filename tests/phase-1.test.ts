@@ -24,6 +24,12 @@ describe('Phase 1 — Hello Hono', () => {
       const html = await res.text();
       expect(html).toMatch(/class="tagline"/);
     });
+
+    it('includes a viewport meta tag', async () => {
+      const res = await app.request('/');
+      const html = await res.text();
+      expect(html).toContain('name="viewport"');
+    });
   });
 
   describe('GET /static/style.css', () => {

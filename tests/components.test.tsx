@@ -63,4 +63,8 @@ describe('Layout', () => {
     expect(html).toContain('<header');
     expect(html).toContain('<footer');
   });
+
+  it('includes a viewport meta tag', () => {
+    expect(render(<Layout>page</Layout>)).toContain('name="viewport"');
+  });
 });
