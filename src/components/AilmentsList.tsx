@@ -1,27 +1,31 @@
 import { FC } from "hono/jsx";
 import { Layout } from "./Layout";
-import type { Ailment } from "../db/types";
+import type { AilmentWithTherapies } from "../routes/ailments";
 
-type AilmentsListProps = { ailments: Ailment[] };
+type AilmentsListProps = { ailments: AilmentWithTherapies[] };
 
 export const AilmentsList: FC<AilmentsListProps> = ({ ailments }) => (
   <Layout>
     <h1>Ailments</h1>
-    <table>
-      <thead>
-        <tr>
-          <th scope="col">Name</th>
-          <th scope="col">Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        {ailments.map((a) => (
-          <tr key={a.id}>
-            <td>{a.name}</td>
-            <td>{a.description}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    {ailments.map((a) => (
+      <article key={a.id}>
+        <header>
+          <h2>{a.name}</h2>
+        </header>
+        <p>{a.description}</p>
+        {a.therapies.length > 0 && (
+          <>
+            <h3>Recommended Therapies</h3>
+            <ul>
+              {a.therapies.map((t) => (
+                <li key={t.id}>
+                  <a href={`/therapies`}>{t.name}</a>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
+      </article>
+    ))}
   </Layout>
 );

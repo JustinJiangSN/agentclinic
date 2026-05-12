@@ -94,4 +94,58 @@ describe("seed", () => {
     ).count;
     expect(second).toBe(first);
   });
+
+  it("inserts at least 5 therapies", () => {
+    const db = freshDb();
+    seed(db);
+    const { count } = db
+      .prepare("SELECT COUNT(*) as count FROM therapies")
+      .get() as { count: number };
+    expect(count).toBeGreaterThanOrEqual(5);
+  });
+
+  it("creates at least one ailment-therapy link", () => {
+    const db = freshDb();
+    seed(db);
+    const { count } = db
+      .prepare("SELECT COUNT(*) as count FROM ailment_therapies")
+      .get() as { count: number };
+    expect(count).toBeGreaterThan(0);
+  });
+});
+
+describe("migrate — phase 3+", () => {
+  it("creates the therapies table", () => {
+    const db = freshDb();
+    const row = db
+      .prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='therapies'")
+      .get();
+    expect(row).toBeDefined();
+  });
+
+  it("creates the ailment_therapies join table", () => {
+    const db = freshDb();
+    const row = db
+      .prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='ailment_therapies'")
+      .get();
+    expect(row).toBeDefined();
+  });
+
+  it("creates the appointments table", () => {
+    const db = freshDb();
+    const row = db
+      .prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='appointments'")
+      .get();
+    expect(row).toBeDefined();
+  });
+
+  it("appointments table has expected columns", () => {
+    const db = freshDb();
+    const cols = db.prepare("PRAGMA table_info(appointments)").all() as { name: string }[];
+    const names = cols.map((c) => c.name);
+    expect(names).toContain("agent_id");
+    expect(names).toContain("therapist_name");
+    expect(names).toContain("datetime");
+    expect(names).toContain("status");
+  });
 });

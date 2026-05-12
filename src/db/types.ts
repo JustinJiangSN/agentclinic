@@ -11,3 +11,19 @@ export interface Ailment {
   name: string;
   description: string;
 }
+
+export interface Therapy {
+  id: number;
+  name: string;
+  description: string;
+  created_at: string;
+}
+
+export interface Appointment {
+  id: number;
+  agent_id: number;
+  therapist_name: string;
+  datetime: string;
+  status: "pending" | "confirmed" | "cancelled";
+  created_at: string;
+}

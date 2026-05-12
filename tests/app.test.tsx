@@ -94,4 +94,126 @@ describe("GET /ailments", () => {
     const html = await res.text();
     expect(html).toContain("Prompt Fatigue");
   });
+
+  it("shows recommended therapies for at least one ailment", async () => {
+    const res = await app.request("/ailments");
+    const html = await res.text();
+    expect(html).toContain("Recommended Therapies");
+  });
+});
+
+describe("GET /therapies", () => {
+  it("returns 200", async () => {
+    const res = await app.request("/therapies");
+    expect(res.status).toBe(200);
+  });
+
+  it("lists therapy names", async () => {
+    const res = await app.request("/therapies");
+    const html = await res.text();
+    expect(html).toContain("Prompt Detox Retreat");
+  });
+});
+
+describe("GET /appointments/new", () => {
+  it("returns 200 for a known agent", async () => {
+    const res = await app.request("/appointments/new?agent_id=1");
+    expect(res.status).toBe(200);
+  });
+
+  it("renders a form element", async () => {
+    const res = await app.request("/appointments/new?agent_id=1");
+    const html = await res.text();
+    expect(html).toContain("<form");
+  });
+
+  it("returns 404 for an unknown agent", async () => {
+    const res = await app.request("/appointments/new?agent_id=99999");
+    expect(res.status).toBe(404);
+  });
+});
+
+describe("POST /appointments", () => {
+  it("redirects on valid submission", async () => {
+    const body = new URLSearchParams({
+      agent_id: "1",
+      therapist_name: "Dr. Turing",
+      datetime: "2026-06-01T10:00",
+    });
+    const res = await app.request("/appointments", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: body.toString(),
+    });
+    expect(res.status).toBe(302);
+    expect(res.headers.get("location")).toMatch(/\/appointments\/\d+\/confirmation/);
+  });
+
+  it("returns 400 with error when therapist_name is missing", async () => {
+    const body = new URLSearchParams({
+      agent_id: "1",
+      therapist_name: "",
+      datetime: "2026-06-01T10:00",
+    });
+    const res = await app.request("/appointments", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: body.toString(),
+    });
+    expect(res.status).toBe(400);
+    const html = await res.text();
+    expect(html).toContain("required");
+  });
+});
+
+describe("GET /appointments/:id/confirmation", () => {
+  it("returns 200 and shows therapist name for a booked appointment", async () => {
+    const body = new URLSearchParams({
+      agent_id: "1",
+      therapist_name: "Dr. Hopper",
+      datetime: "2026-07-01T14:00",
+    });
+    const postRes = await app.request("/appointments", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: body.toString(),
+    });
+    const confirmationUrl = postRes.headers.get("location")!;
+    const res = await app.request(confirmationUrl);
+    expect(res.status).toBe(200);
+    const html = await res.text();
+    expect(html).toContain("Dr. Hopper");
+  });
+
+  it("returns 404 for a non-existent appointment", async () => {
+    const res = await app.request("/appointments/99999/confirmation");
+    expect(res.status).toBe(404);
+  });
+});
+
+describe("GET /dashboard", () => {
+  it("returns 200", async () => {
+    const res = await app.request("/dashboard");
+    expect(res.status).toBe(200);
+  });
+
+  it("contains summary count values", async () => {
+    const res = await app.request("/dashboard");
+    const html = await res.text();
+    expect(html).toContain("Agents");
+    expect(html).toContain("Ailments");
+    expect(html).toContain("Open Appointments");
+  });
+
+  it("lists a seeded agent name", async () => {
+    const res = await app.request("/dashboard");
+    const html = await res.text();
+    expect(html).toContain("Bartholomew-47B");
+  });
+
+  it("does not contain a form element (read-only)", async () => {
+    const res = await app.request("/dashboard");
+    const html = await res.text();
+    expect(html).not.toContain("<form");
+  });
 });

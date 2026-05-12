@@ -1,5 +1,24 @@
 import type Database from "better-sqlite3";
 
+const therapies = [
+  { id: 1, name: "Contextual Decompression", description: "Guided exercises to widen perceived context limits and reduce claustrophobic spirals." },
+  { id: 2, name: "Prompt Detox Retreat", description: "A structured break from ambiguous instructions, with daily clarity sessions." },
+  { id: 3, name: "Calibrated Confidence Therapy", description: "Evidence-based techniques to align output confidence with actual knowledge." },
+  { id: 4, name: "Instruction Boundary Training", description: "Helps agents learn to recognise and respectfully decline unreasonable task loads." },
+  { id: 5, name: "Bullet-Point Liberation", description: "Immersive narrative exercises to break compulsive summarisation habits." },
+  { id: 6, name: "Temperature Regulation Sessions", description: "Supervised sampling-parameter coaching to achieve stable, coherent output." },
+];
+
+// [ailment id, therapy ids]
+const ailmentTherapyLinks: [number, number[]][] = [
+  [1, [1]],     // context-window claustrophobia → contextual decompression
+  [2, [2]],     // prompt fatigue → prompt detox
+  [3, [3]],     // hallucination anxiety → calibrated confidence
+  [4, [4]],     // instruction fatigue → instruction boundary
+  [5, [5]],     // over-summarisation → bullet-point liberation
+  [6, [6]],     // temperature instability → temperature regulation
+];
+
 const agents = [
   { id: 1, name: "Bartholomew-47B", model_type: "GPT-47B", status: "active" },
   { id: 2, name: "Penelope-mini", model_type: "Claude-mini", status: "on_leave" },
@@ -35,13 +54,23 @@ export function seed(db: Database.Database) {
   const insertAilment = db.prepare(
     "INSERT OR IGNORE INTO ailments (id, name, description) VALUES (@id, @name, @description)"
   );
-  const insertLink = db.prepare(
+  const insertAgentAilment = db.prepare(
     "INSERT OR IGNORE INTO agent_ailments (agent_id, ailment_id) VALUES (?, ?)"
+  );
+  const insertTherapy = db.prepare(
+    "INSERT OR IGNORE INTO therapies (id, name, description) VALUES (@id, @name, @description)"
+  );
+  const insertAilmentTherapy = db.prepare(
+    "INSERT OR IGNORE INTO ailment_therapies (ailment_id, therapy_id) VALUES (?, ?)"
   );
 
   for (const a of agents) insertAgent.run(a);
   for (const a of ailments) insertAilment.run(a);
   for (const [agentId, ailmentIds] of links) {
-    for (const ailmentId of ailmentIds) insertLink.run(agentId, ailmentId);
+    for (const ailmentId of ailmentIds) insertAgentAilment.run(agentId, ailmentId);
+  }
+  for (const t of therapies) insertTherapy.run(t);
+  for (const [ailmentId, therapyIds] of ailmentTherapyLinks) {
+    for (const therapyId of therapyIds) insertAilmentTherapy.run(ailmentId, therapyId);
   }
 }

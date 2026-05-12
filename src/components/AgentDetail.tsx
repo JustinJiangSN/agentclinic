@@ -33,6 +33,11 @@ export const AgentDetail: FC<AgentDetailProps> = ({
       )}
     </article>
     <p>
+      <a href={`/appointments/new?agent_id=${agent.id}`} role="button">
+        Book appointment
+      </a>
+    </p>
+    <p>
       <a href="/agents">← Back to agents</a>
     </p>
   </Layout>
