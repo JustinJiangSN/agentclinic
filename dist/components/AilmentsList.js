@@ -1,0 +1,3 @@
+import { jsx as _jsx, Fragment as _Fragment, jsxs as _jsxs } from "hono/jsx/jsx-runtime";
+import { Layout } from "./Layout";
+export const AilmentsList = ({ ailments }) => (_jsxs(Layout, { children: [_jsx("h1", { children: "Ailments" }), ailments.map((a) => (_jsxs("article", { children: [_jsx("header", { children: _jsx("h2", { children: a.name }) }), _jsx("p", { children: a.description }), a.therapies.length > 0 && (_jsxs(_Fragment, { children: [_jsx("h3", { children: "Recommended Therapies" }), _jsx("ul", { children: a.therapies.map((t) => (_jsx("li", { children: _jsx("a", { href: `/therapies`, children: t.name }) }, t.id))) })] }))] }, a.id)))] }));

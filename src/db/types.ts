@@ -27,3 +27,12 @@ export interface Appointment {
   status: "pending" | "confirmed" | "cancelled";
   created_at: string;
 }
+
+export interface Review {
+  id: number;
+  agent_id: number;
+  author: string;
+  body: string;
+  approved: number;
+  created_at: string;
+}

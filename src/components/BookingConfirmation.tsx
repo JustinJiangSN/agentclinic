@@ -6,24 +6,20 @@ type BookingConfirmationProps = { appointment: Appointment; agent: Agent };
 
 export const BookingConfirmation: FC<BookingConfirmationProps> = ({ appointment, agent }) => (
   <Layout>
-    <h1>Appointment Confirmed</h1>
-    <article>
-      <header>
-        <p>Your appointment has been booked.</p>
-      </header>
+    <div class="alert-success">Appointment booked successfully.</div>
+    <div class="card">
+      <h1>Appointment Confirmed</h1>
       <dl>
-        <dt>Agent</dt>
+        <dt><strong>Agent</strong></dt>
         <dd>{agent.name}</dd>
-        <dt>Therapist</dt>
+        <dt><strong>Therapist</strong></dt>
         <dd>{appointment.therapist_name}</dd>
-        <dt>Date &amp; Time</dt>
+        <dt><strong>Date &amp; Time</strong></dt>
         <dd>{appointment.datetime.replace("T", " ")}</dd>
-        <dt>Status</dt>
-        <dd>{appointment.status}</dd>
+        <dt><strong>Status</strong></dt>
+        <dd><span class={`badge badge-${appointment.status}`}>{appointment.status}</span></dd>
       </dl>
-    </article>
-    <p>
-      <a href={`/agents/${agent.id}`}>← Back to {agent.name}</a>
-    </p>
+    </div>
+    <a href={`/agents/${agent.id}`} class="back-link">← Back to {agent.name}</a>
   </Layout>
 );

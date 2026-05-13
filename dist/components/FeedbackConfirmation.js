@@ -1,0 +1,3 @@
+import { jsx as _jsx, jsxs as _jsxs } from "hono/jsx/jsx-runtime";
+import { Layout } from "./Layout";
+export const FeedbackConfirmation = () => (_jsxs(Layout, { children: [_jsx("div", { class: "alert-success", children: "Thank you \u2014 your feedback has been received." }), _jsxs("div", { class: "card", children: [_jsx("h1", { children: "Feedback submitted" }), _jsx("p", { children: "Our clinical team will review your message shortly. We appreciate you taking the time to help us improve the AgentClinic experience." })] }), _jsx("a", { href: "/", class: "back-link", children: "\u2190 Back to home" })] }));

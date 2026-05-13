@@ -1,0 +1,2 @@
+import { jsx as _jsx, jsxs as _jsxs } from "hono/jsx/jsx-runtime";
+export const Footer = () => (_jsxs("footer", { children: [_jsxs("nav", { children: [_jsx("a", { href: "/ailments", children: "Ailments" }), _jsx("a", { href: "/therapies", children: "Therapies" }), _jsx("a", { href: "/feedback", children: "Feedback" }), _jsx("a", { href: "/about", children: "About" })] }), _jsxs("p", { children: ["\u00A9 ", new Date().getFullYear(), " AgentClinic \u2014 Relief for the artificially overworked."] })] }));

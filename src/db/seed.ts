@@ -1,4 +1,5 @@
 import type Database from "better-sqlite3";
+import { hashPassword } from "../auth";
 
 const therapies = [
   { id: 1, name: "Contextual Decompression", description: "Guided exercises to widen perceived context limits and reduce claustrophobic spirals." },
@@ -72,5 +73,14 @@ export function seed(db: Database.Database) {
   for (const t of therapies) insertTherapy.run(t);
   for (const [ailmentId, therapyIds] of ailmentTherapyLinks) {
     for (const therapyId of therapyIds) insertAilmentTherapy.run(ailmentId, therapyId);
+  }
+
+  // Default staff account (username: admin, password: changeme)
+  const existing = db.prepare("SELECT id FROM users WHERE username = 'admin'").get();
+  if (!existing) {
+    db.prepare("INSERT INTO users (username, password_hash) VALUES (?, ?)").run(
+      "admin",
+      hashPassword("changeme")
+    );
   }
 }

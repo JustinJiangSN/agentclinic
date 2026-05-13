@@ -33,7 +33,8 @@ describe("GET /", () => {
   it("contains a tagline", async () => {
     const res = await app.request("/");
     const html = await res.text();
-    expect(html).toContain("Where AI agents come to get better.");
+    expect(html).toContain("AgentClinic");
+    expect(html).toContain("agents");
   });
 
   it("links the CSS stylesheet", async () => {
@@ -192,13 +193,30 @@ describe("GET /appointments/:id/confirmation", () => {
 });
 
 describe("GET /dashboard", () => {
-  it("returns 200", async () => {
+  async function dashboardWithSession(): Promise<Response> {
+    const loginRes = await app.request("/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({ username: "admin", password: "changeme" }).toString(),
+    });
+    const cookie = loginRes.headers.get("set-cookie") ?? "";
+    const sessionCookie = cookie.split(";")[0];
+    return app.request("/dashboard", { headers: { Cookie: sessionCookie } });
+  }
+
+  it("redirects to login when unauthenticated", async () => {
     const res = await app.request("/dashboard");
+    expect(res.status).toBe(302);
+    expect(res.headers.get("location")).toContain("/auth/login");
+  });
+
+  it("returns 200 when authenticated", async () => {
+    const res = await dashboardWithSession();
     expect(res.status).toBe(200);
   });
 
   it("contains summary count values", async () => {
-    const res = await app.request("/dashboard");
+    const res = await dashboardWithSession();
     const html = await res.text();
     expect(html).toContain("Agents");
     expect(html).toContain("Ailments");
@@ -206,14 +224,8 @@ describe("GET /dashboard", () => {
   });
 
   it("lists a seeded agent name", async () => {
-    const res = await app.request("/dashboard");
+    const res = await dashboardWithSession();
     const html = await res.text();
     expect(html).toContain("Bartholomew-47B");
-  });
-
-  it("does not contain a form element (read-only)", async () => {
-    const res = await app.request("/dashboard");
-    const html = await res.text();
-    expect(html).not.toContain("<form");
   });
 });

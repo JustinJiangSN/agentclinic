@@ -4,6 +4,10 @@ import type { Agent } from "../db/types";
 
 type AgentsListProps = { agents: Agent[] };
 
+function statusBadge(status: string) {
+  return <span class={`badge badge-${status}`}>{status.replace("_", " ")}</span>;
+}
+
 export const AgentsList: FC<AgentsListProps> = ({ agents }) => (
   <Layout>
     <h1>Agents</h1>
@@ -18,11 +22,9 @@ export const AgentsList: FC<AgentsListProps> = ({ agents }) => (
       <tbody>
         {agents.map((a) => (
           <tr key={a.id}>
-            <td>
-              <a href={`/agents/${a.id}`}>{a.name}</a>
-            </td>
+            <td><a href={`/agents/${a.id}`}>{a.name}</a></td>
             <td>{a.model_type}</td>
-            <td>{a.status.replace("_", " ")}</td>
+            <td>{statusBadge(a.status)}</td>
           </tr>
         ))}
       </tbody>

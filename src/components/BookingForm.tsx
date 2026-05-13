@@ -7,17 +7,9 @@ type BookingFormProps = { agent: Agent; error?: string };
 export const BookingForm: FC<BookingFormProps> = ({ agent, error }) => (
   <Layout>
     <h1>Book an Appointment</h1>
-    <article>
-      <header>
-        <p>
-          Booking for <strong>{agent.name}</strong>
-        </p>
-      </header>
-      {error && (
-        <p>
-          <strong style="color: var(--pico-del-color, #c62828);">{error}</strong>
-        </p>
-      )}
+    <div class="card">
+      <p class="card-header">Booking for <strong>{agent.name}</strong></p>
+      {error && <div class="alert-error">{error}</div>}
       <form method="post" action="/appointments">
         <input type="hidden" name="agent_id" value={String(agent.id)} />
         <label>
@@ -28,11 +20,9 @@ export const BookingForm: FC<BookingFormProps> = ({ agent, error }) => (
           Appointment date and time
           <input type="datetime-local" name="datetime" required />
         </label>
-        <button type="submit">Book appointment</button>
+        <button type="submit" class="btn-primary" style="margin-top:0.5rem">Book appointment</button>
       </form>
-    </article>
-    <p>
-      <a href={`/agents/${agent.id}`}>← Back to {agent.name}</a>
-    </p>
+    </div>
+    <a href={`/agents/${agent.id}`} class="back-link">← Back to {agent.name}</a>
   </Layout>
 );

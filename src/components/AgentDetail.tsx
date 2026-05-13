@@ -4,20 +4,14 @@ import type { Agent, Ailment } from "../db/types";
 
 type AgentDetailProps = { agent: Agent; ailments: Ailment[] };
 
-export const AgentDetail: FC<AgentDetailProps> = ({
-  agent,
-  ailments,
-}) => (
+export const AgentDetail: FC<AgentDetailProps> = ({ agent, ailments }) => (
   <Layout>
-    <article>
-      <header>
-        <h1>{agent.name}</h1>
-      </header>
+    <div class="card">
+      <h1>{agent.name}</h1>
+      <p><strong>Model:</strong> {agent.model_type}</p>
       <p>
-        <strong>Model:</strong> {agent.model_type}
-      </p>
-      <p>
-        <strong>Status:</strong> {agent.status.replace("_", " ")}
+        <strong>Status:</strong>{" "}
+        <span class={`badge badge-${agent.status}`}>{agent.status.replace("_", " ")}</span>
       </p>
       {ailments.length > 0 && (
         <>
@@ -31,14 +25,17 @@ export const AgentDetail: FC<AgentDetailProps> = ({
           </ul>
         </>
       )}
-    </article>
-    <p>
-      <a href={`/appointments/new?agent_id=${agent.id}`} role="button">
-        Book appointment
-      </a>
-    </p>
-    <p>
-      <a href="/agents">← Back to agents</a>
-    </p>
+    </div>
+
+    <a href={`/appointments/new?agent_id=${agent.id}`} class="btn-primary">
+      Book appointment
+    </a>
+    {"  "}
+    <a href={`/agents/${agent.id}/reviews`} class="btn-secondary" style="margin-left:0.5rem">
+      Reviews
+    </a>
+
+    <br />
+    <a href="/agents" class="back-link">← Back to agents</a>
   </Layout>
 );
